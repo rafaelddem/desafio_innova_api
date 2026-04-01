@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,16 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/login', [LoginController::class, 'logIn'])->name('login');
 
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/user', [LoginController::class, 'user'])->name('user');
+Route::post('user/', [UserController::class, 'store'])->name('store');
 
-    Route::middleware(['can:admin'])->group(function () {
-        Route::get('/admin', [LoginController::class, 'admin'])->name('admin');
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/logout', [LoginController::class, 'logOut'])->name('logout');
+
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+        Route::get('/', [UserController::class, 'show'])->name('show');
+        Route::put('/', [UserController::class, 'update'])->name('update');
+        Route::delete('/', [UserController::class, 'destroy'])->name('destroy');
     });
 });
