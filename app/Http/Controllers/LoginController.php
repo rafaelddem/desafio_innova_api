@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class LoginController extends BaseController
 {
     public function logIn(Request $request)
     {
@@ -19,13 +19,13 @@ class LoginController extends Controller
                 throw new Exception(__('Invalid Data.'));
 
             return response()->json([
-                'message' => 'Operação concluída com sucesso',
+                'message' => 'Login successful.',
                 'token' => $token,
             ], 200);
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         } catch (\Throwable $th) {
-            $message = 'Invalid Data.';
+            $message = self::DEFAULT_CONTROLLER_ERROR;
         }
 
         return response()->json([
@@ -33,37 +33,12 @@ class LoginController extends Controller
         ], 401);
     }
 
-    public function user(Request $request)
+    public function logOut(Request $request)
     {
-        try {
-            return response()->json([
-                'message' => 'Operação concluída com sucesso',
-            ], 200);
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-        } catch (\Throwable $th) {
-            $message = 'Invalid Data.';
-        }
+        auth()->logout();
 
         return response()->json([
-            'message' => __($message),
-        ], 401);
-    }
-
-    public function admin(Request $request)
-    {
-        try {
-            return response()->json([
-                'message' => 'Operação concluída com sucesso',
-            ], 200);
-        } catch (Exception $exception) {
-            $message = $exception->getMessage();
-        } catch (\Throwable $th) {
-            $message = 'Invalid Data.';
-        }
-
-        return response()->json([
-            'message' => __($message),
-        ], 401);
+            'message' => 'Logout successful.',
+        ], 200);
     }
 }
