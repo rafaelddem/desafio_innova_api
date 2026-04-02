@@ -19,8 +19,8 @@ class HeroController extends BaseController
     {
         try {
             return response()->json([
-                'message' => 'User data',
-                'users' => $this->service->list(),
+                'message' => 'Available Heroes',
+                'heroes' => $this->service->list(),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();
