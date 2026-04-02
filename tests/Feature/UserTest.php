@@ -131,7 +131,7 @@ class UserTest extends TestCase
 
     public function test_show_user_successfully(): void
     {
-        $user = User::factory()->create([ 'role' => Role::User ]);
+        $user = User::factory()->create([ 'role' => Role::User->value ]);
 
         $this->actingAs($user)->get(route('user.show'))
             ->assertStatus(200)
@@ -144,7 +144,7 @@ class UserTest extends TestCase
 
     public function test_show_admin_successfully(): void
     {
-        $admin = User::factory()->create([ 'role' => Role::Admin ]);
+        $admin = User::factory()->create([ 'role' => Role::Admin->value ]);
 
         $this->actingAs($admin)->get(route('user.show'))
             ->assertStatus(200)
@@ -155,10 +155,34 @@ class UserTest extends TestCase
             ]);
     }
 
+    public function test_list_user_successfully(): void
+    {
+        $user = User::factory()->create([ 'role' => Role::User->value ]);
+
+        $this->actingAs($user)->get(route('user.list'))
+            ->assertStatus(403)
+            ->assertJsonFragment([
+                'message' => 'You do not have permission to access this resource.',
+            ]);
+    }
+
+    public function test_list_admin_successfully(): void
+    {
+        $admin = User::factory()->create([ 'role' => Role::Admin->value ]);
+
+        $this->actingAs($admin)->get(route('user.list'))
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'message' => 'User data',
+                'username' => $admin->username,
+                'email' => $admin->email,
+            ]);
+    }
+
     public function test_update_user_successfully(): void
     {
-        $user = User::factory()->create([ 'role' => Role::User ]);
-        $userData = User::factory()->make([ 'role' => Role::User ])->toArray();
+        $user = User::factory()->create([ 'role' => Role::User->value ]);
+        $userData = User::factory()->make([ 'role' => Role::User->value ])->toArray();
         $userData['password'] = $userData['password_confirmation'] = '123456789';
         unset($userData['email']);
         unset($userData['role']);
@@ -176,8 +200,8 @@ class UserTest extends TestCase
 
     public function test_update_admin_successfully(): void
     {
-        $admin = User::factory()->create([ 'role' => Role::Admin ]);
-        $adminData = User::factory()->make([ 'role' => Role::Admin ])->toArray();
+        $admin = User::factory()->create([ 'role' => Role::Admin->value ]);
+        $adminData = User::factory()->make([ 'role' => Role::Admin->value ])->toArray();
         $adminData['password'] = $adminData['password_confirmation'] = '123456789';
         unset($adminData['email']);
         unset($adminData['role']);
@@ -195,8 +219,8 @@ class UserTest extends TestCase
 
     public function test_update_fail_email_role(): void
     {
-        $user = User::factory()->create([ 'role' => Role::User ]);
-        $userData = User::factory()->make([ 'role' => Role::User ])->toArray();
+        $user = User::factory()->create([ 'role' => Role::User->value ]);
+        $userData = User::factory()->make([ 'role' => Role::User->value ])->toArray();
         $userData['password'] = $userData['password_confirmation'] = '123456';
 
         $this->actingAs($user)->put(route('user.update', $userData))
@@ -271,7 +295,7 @@ class UserTest extends TestCase
 
     public function test_delete_admin_successfully(): void
     {
-        $admin = User::factory()->create([ 'role' => Role::Admin ]);
+        $admin = User::factory()->create([ 'role' => Role::Admin->value ]);
         $token = JWTAuth::fromUser($admin);
 
         $this->withHeaders([ 'Authorization' => 'Bearer ' . $token ])->actingAs($admin)->delete(route('user.destroy'))
