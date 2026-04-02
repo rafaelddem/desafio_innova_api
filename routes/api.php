@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HeroController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [LoginController::class, 'logIn'])->name('login');
 
 Route::post('/user', [UserController::class, 'store'])->name('store');
+Route::get('/heroes', [HeroController::class, 'list'])->name('list');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logOut'])->name('logout');
