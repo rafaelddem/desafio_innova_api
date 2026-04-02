@@ -21,6 +21,11 @@ class LoginController extends BaseController
             return response()->json([
                 'message' => 'Login successful.',
                 'token' => $token,
+                'user' => [
+                    'id' => auth()->user()->id,
+                    'username' => auth()->user()->username,
+                    'role' => auth()->user()->role,
+                ]
             ], 200);
         } catch (Exception $exception) {
             $message = $exception->getMessage();
