@@ -20,11 +20,9 @@ class UserController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $user = $this->service->create($request->all());
-
             return response()->json([
                 'message' => 'User successfully registered.',
-                'user' => $user,
+                'user' => $this->service->create($request->all()),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();
@@ -40,11 +38,27 @@ class UserController extends BaseController
     public function show(Request $request)
     {
         try {
-            $user = $request->user();
-
             return response()->json([
                 'message' => 'User data',
-                'user' => $user,
+                'user' => $request->user(),
+            ], 200);
+        } catch (BaseException $exception) {
+            $message = $exception->getMessage();
+        } catch (\Throwable $th) {
+            $message = self::DEFAULT_CONTROLLER_ERROR;
+        }
+
+        return response()->json([
+            'message' => __($message),
+        ], 401);
+    }
+
+    public function list(Request $request)
+    {
+        try {
+            return response()->json([
+                'message' => 'User data',
+                'users' => $this->service->list(),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();
@@ -60,11 +74,9 @@ class UserController extends BaseController
     public function update(UpdateRequest $request)
     {
         try {
-            $user = $this->service->update($request->user()->id, $request->all());
-
             return response()->json([
                 'message' => 'User successfully updated.',
-                'user' => $user,
+                'user' => $this->service->update($request->user()->id, $request->all()),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();

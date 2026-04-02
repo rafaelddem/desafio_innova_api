@@ -27,12 +27,16 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/', [UserController::class, 'show'])->name('show');
         Route::put('/', [UserController::class, 'update'])->name('update');
         Route::delete('/', [UserController::class, 'destroy'])->name('destroy');
+
+        Route::middleware(['can:admin'])->group(function () {
+            Route::get('/list', [UserController::class, 'list'])->name('list');
+        });
     });
 
     Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
         Route::get('/', [ProjectController::class, 'list'])->name('list');
         Route::get('/{id}', [ProjectController::class, 'show'])->name('show');
-        
+
         Route::middleware(['can:admin'])->group(function () {
             Route::post('/', [ProjectController::class, 'store'])->name('store');
             Route::put('/{id}', [ProjectController::class, 'update'])->name('update');

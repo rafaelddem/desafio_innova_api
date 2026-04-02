@@ -21,11 +21,9 @@ class ProjectController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $project = $this->service->create($request->all());
-
             return response()->json([
                 'message' => 'Project successfully registered.',
-                'project' => $project,
+                'project' => $this->service->create($request->all()),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();
@@ -80,11 +78,9 @@ class ProjectController extends BaseController
     public function update(int $id, Request $request)
     {
         try {
-            $project = $this->service->update($id, $request->all());
-
             return response()->json([
                 'message' => 'Project successfully updated.',
-                'project' => $project,
+                'project' => $this->service->update($id, $request->all()),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();
