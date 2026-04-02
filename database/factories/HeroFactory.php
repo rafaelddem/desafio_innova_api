@@ -2,15 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Enums\Role;
-use App\Models\Hero;
+use App\Enums\Origin;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+class HeroFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -25,11 +23,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => substr(fake()->name(), 0, 20),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => Hash::make('123456'),
-            'role' => $this->faker->randomElement(Role::values()),
-            'hero_id' => Hero::factory()->create()->id,
+            'name' => substr(fake()->name(), 0, 20),
+            'origin' => $this->faker->randomElement(Origin::values()),
         ];
     }
 }
