@@ -15,14 +15,10 @@ abstract class BaseRepository
         $this->model = app($model);
     }
 
-    public function list(bool $onlyActive = true)
+    public function list()
     {
         try {
-            return $this->model
-                ->when($onlyActive, function ($query) {
-                    $query->where('active', true);
-                })
-                ->get();
+            return $this->model->get();
         } catch (\Throwable $th) {
             throw new RepositoryException();
         }

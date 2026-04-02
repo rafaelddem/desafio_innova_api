@@ -43,10 +43,10 @@ class BaseService
         }
     }
 
-    public function list(bool $onlyActive = true)
+    public function list()
     {
         try {
-            return $this->repository->list($onlyActive);
+            return $this->repository->list();
         } catch (BaseException $exception) {
             throw $exception;
         } catch (\Throwable $th) {
