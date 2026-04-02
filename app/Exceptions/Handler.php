@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -34,5 +35,17 @@ class Handler extends ExceptionHandler
         return response()->json([
             'error' => 'Invalid Token\Credentials.'
         ], 401);
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ValidationException) {
+            return response()->json([
+                'message' => 'Validation Exception',
+                'errors' => $exception->errors(),
+            ], 422);
+        }
+
+        return parent::render($request, $exception);
     }
 }

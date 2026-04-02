@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\BaseException;
 use App\Services\UserService;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Http\Request;
 
 class UserController extends BaseController
@@ -16,7 +17,7 @@ class UserController extends BaseController
         $this->service = app(UserService::class);
     }
 
-    public function store(UserRequest $request)
+    public function store(CreateRequest $request)
     {
         try {
             $user = $this->service->create($request->all());
@@ -56,7 +57,7 @@ class UserController extends BaseController
         ], 401);
     }
 
-    public function update(Request $request)
+    public function update(UpdateRequest $request)
     {
         try {
             $user = $this->service->update($request->user()->id, $request->all());
