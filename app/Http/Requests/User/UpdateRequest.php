@@ -15,11 +15,11 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'sometimes|between:3,20|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
+            'username' => 'sometimes|between:3,20',
             'email' => 'prohibited',
             'password' => 'sometimes|string|min:6|confirmed',
             'hero_id' => 'sometimes|numeric|unique:users,hero_id|exists:heroes,id',
-            'role' => 'sometimes|in:' . implode(',', Role::values()),
+            'role' => 'prohibited',
         ];
     }
 }

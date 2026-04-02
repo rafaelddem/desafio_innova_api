@@ -15,10 +15,10 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|between:3,20|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
-            'description' => 'sometimes|max:255|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
+            'name' => 'sometimes|between:3,20',
+            'description' => 'sometimes|max:255',
             'status' => 'sometimes|in:' . implode(',', Status::values()),
-            'goals' => 'sometimes|max:150|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
+            'goals' => 'sometimes|max:150',
             'user_id' => 'sometimes|exists:users,id',
         ];
     }

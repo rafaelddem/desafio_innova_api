@@ -15,10 +15,10 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|between:3,20|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
-            'description' => 'required|max:255|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
+            'name' => 'required|between:3,20',
+            'description' => 'required|max:255',
             'status' => 'required|in:' . implode(',', Status::values()),
-            'goals' => 'required|max:150|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
+            'goals' => 'required|max:150',
             'user_id' => 'required|exists:users,id',
         ];
     }

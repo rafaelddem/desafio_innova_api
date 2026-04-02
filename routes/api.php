@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [LoginController::class, 'logIn'])->name('login');
 
-Route::post('user/', [UserController::class, 'store'])->name('store');
+Route::post('/user', [UserController::class, 'store'])->name('store');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logOut'])->name('logout');

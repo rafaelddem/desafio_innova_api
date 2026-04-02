@@ -15,7 +15,7 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|between:3,20|regex:"^[A-Za-zÀ-ÖØ-öø-ÿç0-9\-.() ]+$"',
+            'username' => 'required|between:3,20',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
             'hero_id' => 'required|numeric|unique:users,hero_id|exists:heroes,id',
