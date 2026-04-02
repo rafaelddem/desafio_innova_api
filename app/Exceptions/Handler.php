@@ -2,9 +2,12 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,6 +47,30 @@ class Handler extends ExceptionHandler
                 'message' => 'Validation Exception',
                 'errors' => $exception->errors(),
             ], 422);
+        }
+
+        if ($exception instanceof AuthenticationException) {
+            return response()->json([
+                'message' => 'Unauthorized.'
+            ], 401);
+        }
+
+        if ($exception instanceof AuthorizationException) {
+            return response()->json([
+                'message' => 'You do not have permission to access this resource.'
+            ], 403);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->json([
+                'message' => 'Endpoint not found.'
+            ], 404);
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return response()->json([
+                'message' => 'Method not allowed.'
+            ], 405);
         }
 
         return parent::render($request, $exception);
