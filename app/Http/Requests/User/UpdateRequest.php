@@ -18,7 +18,7 @@ class UpdateRequest extends FormRequest
             'username' => 'sometimes|between:3,20',
             'email' => 'prohibited',
             'password' => 'sometimes|string|min:6|confirmed',
-            'hero_id' => 'sometimes|numeric|unique:users,hero_id|exists:heroes,id',
+            'hero_id' => 'sometimes|numeric|exists:heroes,id|unique:users,hero_id,' . auth()->user()->id,
             'role' => 'prohibited',
         ];
     }
