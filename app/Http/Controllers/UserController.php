@@ -23,7 +23,7 @@ class UserController extends BaseController
             $user = $this->service->create($request->all());
 
             return response()->json([
-                'message' => 'Hero successfully registered.',
+                'message' => 'User successfully registered.',
                 'user' => $user,
             ], 200);
         } catch (BaseException $exception) {
@@ -43,7 +43,7 @@ class UserController extends BaseController
             $user = $request->user();
 
             return response()->json([
-                'message' => 'Hero data',
+                'message' => 'User data',
                 'user' => $user,
             ], 200);
         } catch (BaseException $exception) {
@@ -63,7 +63,7 @@ class UserController extends BaseController
             $user = $this->service->update($request->user()->id, $request->all());
 
             return response()->json([
-                'message' => 'Hero successfully updated.',
+                'message' => 'User successfully updated.',
                 'user' => $user,
             ], 200);
         } catch (BaseException $exception) {
@@ -83,7 +83,7 @@ class UserController extends BaseController
             $this->service->delete($request->user()->id);
 
             return response()->json([
-                'message' => 'Hero successfully removed.',
+                'message' => 'User successfully removed.',
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();
