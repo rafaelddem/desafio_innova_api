@@ -241,7 +241,8 @@ class UserTest extends TestCase
     public function test_update_fail_duplicate_email_or_hero(): void
     {
         $user = User::factory()->create();
-        $userData['hero_id'] = $user->hero_id;
+        $user2 = User::factory()->create();
+        $userData['hero_id'] = $user2->hero_id;
 
         $this->actingAs($user)->put(route('user.update', $userData))
             ->assertStatus(422)
