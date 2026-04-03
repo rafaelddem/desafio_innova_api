@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Role;
 use App\Enums\Status;
 use App\Exceptions\BaseException;
 use App\Http\Requests\Project\CreateRequest;
+use App\Http\Requests\Project\UpdateRequest;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
 
@@ -75,7 +75,7 @@ class ProjectController extends BaseController
         ], 401);
     }
 
-    public function update(int $id, Request $request)
+    public function update(int $id, UpdateRequest $request)
     {
         try {
             return response()->json([

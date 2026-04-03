@@ -19,7 +19,7 @@ class CreateRequest extends FormRequest
             'description' => 'required|max:255',
             'status' => 'required|in:' . implode(',', Status::values()),
             'goals' => 'required|max:150',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|numeric|exists:users,id',
         ];
     }
 }
