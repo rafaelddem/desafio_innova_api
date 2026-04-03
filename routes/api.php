@@ -23,7 +23,7 @@ Route::post('/user', [UserController::class, 'store'])->name('store');
 Route::get('/heroes', [HeroController::class, 'list'])->name('list');
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::get('/logout', [LoginController::class, 'logOut'])->name('logout');
+    Route::post('/logout', [LoginController::class, 'logOut'])->name('logout');
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::get('/', [UserController::class, 'show'])->name('show');
