@@ -50,4 +50,20 @@ class ProjectService extends BaseService
 
         return [];
     }
+
+    public function update(int $id, array $input)
+    {
+        try {
+            $project = $this->repository->find($id);
+
+            if (auth()->user()->role == Role::User->value && $project->user_id != auth()->user()->id) 
+                throw new BaseException('You do not have permission to access this resource.');
+
+            return $this->repository->update($id, $input);
+        } catch (BaseException $exception) {
+            throw $exception;
+        } catch (\Throwable $th) {
+            throw new ServiceException();
+        }
+    }
 }

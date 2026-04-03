@@ -38,10 +38,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
         Route::get('/', [ProjectController::class, 'list'])->name('list');
         Route::get('/{id}', [ProjectController::class, 'show'])->name('show');
+        Route::put('/{id}', [ProjectController::class, 'update'])->name('update');
 
         Route::middleware(['can:admin'])->group(function () {
             Route::post('/', [ProjectController::class, 'store'])->name('store');
-            Route::put('/{id}', [ProjectController::class, 'update'])->name('update');
             Route::delete('/{id}', [ProjectController::class, 'destroy'])->name('destroy');
         });
     });

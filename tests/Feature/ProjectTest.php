@@ -203,7 +203,7 @@ class ProjectTest extends TestCase
             ]);
     }
 
-    public function test_update_user_fail(): void
+    public function test_update_user_successfully(): void
     {
         $user = User::factory()->create([ 'role' => Role::User->value ]);
 
@@ -212,7 +212,30 @@ class ProjectTest extends TestCase
         $projectData['id'] = $project->id;
 
         $this->actingAs($user)->put(route('project.update', $projectData))
-            ->assertStatus(403)
+            ->assertStatus(200)
+            ->assertExactJson([
+                'message' => 'Project successfully updated.',
+                "project" => [
+                    "id" => (int) $projectData['id'],
+                    "name" => $projectData['name'],
+                    "description" => $projectData['description'],
+                    "status" => $projectData['status'],
+                    "goals" => $projectData['goals'],
+                    "user_id" => (string) $projectData['user_id'],
+                ],
+            ]);
+    }
+
+    public function test_update_user_fail(): void
+    {
+        $user = User::factory()->create([ 'role' => Role::User->value ]);
+
+        $project = Project::factory()->create();
+        $projectData = Project::factory()->make()->toArray();
+        $projectData['id'] = $project->id;
+
+        $this->actingAs($user)->put(route('project.update', $projectData))
+            ->assertStatus(401)
             ->assertJsonFragment([
                 'message' => 'You do not have permission to access this resource.',
             ]);
