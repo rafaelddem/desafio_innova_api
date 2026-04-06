@@ -218,6 +218,22 @@ class UserTest extends TestCase
         $this->assertDatabaseHas('users', $adminData);
     }
 
+    public function test_update_fail_by_other_user(): void
+    {
+        $userLogin = User::factory()->create([ 'role' => Role::User->value ]);
+        $userUpdate = User::factory()->create([ 'role' => Role::User->value ]);
+        $userData = [
+            'id' => $userUpdate->id,
+            'username' => $userUpdate->username,
+        ];
+
+        $this->actingAs($userLogin)->put(route('user.updateUser', $userData))
+            ->assertStatus(403)
+            ->assertJsonFragment([
+                'message' => 'You do not have permission to access this resource.',
+            ]);
+    }
+
     public function test_update_fail_email_role(): void
     {
         $user = User::factory()->create([ 'role' => Role::User->value ]);
