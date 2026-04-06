@@ -32,6 +32,7 @@ Route::middleware(['auth:api'])->group(function () {
 
         Route::middleware(['can:admin'])->group(function () {
             Route::get('/list', [UserController::class, 'list'])->name('list');
+            Route::put('/{id}', [UserController::class, 'updateUser'])->name('updateUser');
         });
     });
 

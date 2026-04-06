@@ -73,10 +73,15 @@ class UserController extends BaseController
 
     public function update(UpdateRequest $request)
     {
+        return $this->updateUser($request->user()->id, $request);
+    }
+
+    public function updateUser(int $id, UpdateRequest $request)
+    {
         try {
             return response()->json([
                 'message' => 'User successfully updated.',
-                'user' => $this->service->update($request->user()->id, $request->all()),
+                'user' => $this->service->update($id, $request->all()),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();

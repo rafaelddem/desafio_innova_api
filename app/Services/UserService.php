@@ -6,6 +6,7 @@ use App\Exceptions\BaseException;
 use App\Exceptions\ServiceException;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Gate;
 
 class UserService extends BaseService
 {
@@ -26,6 +27,10 @@ class UserService extends BaseService
     public function update(int $id, array $attributes)
     {
         try {
+            $user = $this->repository->find($id);
+
+            Gate::authorize('update', $user);
+
             return new UserResource($this->repository->update($id, $attributes));
         } catch (\Throwable $th) {
             throw new ServiceException();
