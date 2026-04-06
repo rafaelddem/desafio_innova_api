@@ -7,6 +7,7 @@ use App\Enums\Status;
 use App\Exceptions\BaseException;
 use App\Exceptions\ServiceException;
 use App\Repositories\ProjectRepository;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectService extends BaseService
 {
@@ -56,8 +57,7 @@ class ProjectService extends BaseService
         try {
             $project = $this->repository->find($id);
 
-            if (auth()->user()->role == Role::User->value && $project->user_id != auth()->user()->id) 
-                throw new BaseException('You do not have permission to access this resource.');
+            Gate::authorize('update', [$project, $input]);
 
             return $this->repository->update($id, $input);
         } catch (BaseException $exception) {
