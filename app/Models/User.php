@@ -79,9 +79,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Hero::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
-     */
     public function getHeroNameAttribute(): string
     {
         return $this->hero->name;

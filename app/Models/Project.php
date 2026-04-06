@@ -19,7 +19,10 @@ class Project extends Model
         'user_id',
     ];
 
+    protected $appends = ['hero_name'];
+
     protected $hidden = [
+        'user',
         'created_at',
         'updated_at',
     ];
@@ -34,5 +37,10 @@ class Project extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getHeroNameAttribute(): string
+    {
+        return $this->user->hero_name;
     }
 }
