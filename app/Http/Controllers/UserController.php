@@ -58,7 +58,7 @@ class UserController extends BaseController
         try {
             return response()->json([
                 'message' => 'User data',
-                'users' => $this->service->list(),
+                'users' => $this->service->listUsers(),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();

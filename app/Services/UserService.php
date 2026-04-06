@@ -13,6 +13,19 @@ class UserService extends BaseService
         $this->repository = app(UserRepository::class);
     }
 
+    public function listUsers(?bool $withAdmin = null)
+    {
+        try {
+            return $this->repository->listUsers($withAdmin);
+        } catch (BaseException $exception) {
+            throw $exception;
+        } catch (\Throwable $th) {
+            throw new ServiceException();
+        }
+
+        return [];
+    }
+
     public function delete(int $id)
     {
         try {

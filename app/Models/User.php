@@ -37,6 +37,8 @@ class User extends Authenticatable implements JWTSubject
         'role',
     ];
 
+    protected $appends = ['hero_name'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,6 +50,7 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at',
         'created_at',
         'updated_at',
+        'hero',
     ];
 
     /**
@@ -74,5 +77,13 @@ class User extends Authenticatable implements JWTSubject
     public function hero(): BelongsTo
     {
         return $this->belongsTo(Hero::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function getHeroNameAttribute(): string
+    {
+        return $this->hero->name;
     }
 }
