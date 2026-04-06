@@ -26,7 +26,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logOut'])->name('logout');
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
-        Route::get('/{id}', [UserController::class, 'show'])->name('show');
         Route::put('/', [UserController::class, 'update'])->name('update');
         Route::delete('/', [UserController::class, 'destroy'])->name('destroy');
 
@@ -34,6 +33,8 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('/list', [UserController::class, 'list'])->name('list');
             Route::put('/{id}', [UserController::class, 'updateUser'])->name('updateUser');
         });
+
+        Route::get('/{id}', [UserController::class, 'show'])->name('show');
     });
 
     Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
