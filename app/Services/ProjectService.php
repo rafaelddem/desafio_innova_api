@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Enums\Status;
 use App\Exceptions\BaseException;
 use App\Exceptions\ServiceException;
+use App\Http\Resources\ProjectResource;
 use App\Repositories\ProjectRepository;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,6 +17,24 @@ class ProjectService extends BaseService
         $this->repository = app(ProjectRepository::class);
     }
 
+    public function create(array $attributes)
+    {
+        try {
+            return new ProjectResource($this->repository->create($attributes));
+        } catch (\Throwable $th) {
+            throw new ServiceException();
+        }
+    }
+
+    public function show(int $id)
+    {
+        try {
+            return new ProjectResource($this->repository->find($id));
+        } catch (\Throwable $th) {
+            throw new ServiceException();
+        }
+    }
+
     public function findFromUser(int $id)
     {
         try {
@@ -24,7 +43,7 @@ class ProjectService extends BaseService
                 ? $user->id 
                 : null;
 
-            return $this->repository->findFromUser($id, $user_id);
+            return new ProjectResource($this->repository->findFromUser($id, $user_id));
         } catch (BaseException $exception) {
             throw $exception;
         } catch (\Throwable $th) {
@@ -42,7 +61,7 @@ class ProjectService extends BaseService
                 ? $user->id 
                 : $user_id;
 
-            return $this->repository->listProjects($user_id, $status);
+            return ProjectResource::collection($this->repository->listProjects($user_id, $status));
         } catch (BaseException $exception) {
             throw $exception;
         } catch (\Throwable $th) {
@@ -59,7 +78,7 @@ class ProjectService extends BaseService
 
             Gate::authorize('update', [$project, $input]);
 
-            return $this->repository->update($id, $input);
+            return new ProjectResource($this->repository->update($id, $input));
         } catch (BaseException $exception) {
             throw $exception;
         } catch (\Throwable $th) {

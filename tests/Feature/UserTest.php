@@ -82,9 +82,9 @@ class UserTest extends TestCase
             'username' => substr(fake()->text(), 25, 30),
             'email' => substr(fake()->text(), 25, 30),
             'role' => 'fakeRole',
-            'hero_id' => 'fakeHero',
         ])->toArray();
 
+        $userData['hero_id'] = 'fakeHero';
         $userData['password'] = $userData['password_confirmation'] = '123456';
 
         $this->post(route('store', $userData))
@@ -169,13 +169,14 @@ class UserTest extends TestCase
     public function test_list_admin_successfully(): void
     {
         $admin = User::factory()->create([ 'role' => Role::Admin->value ]);
+        $user = User::factory()->create([ 'role' => Role::User->value ]);
 
         $this->actingAs($admin)->get(route('user.list'))
             ->assertStatus(200)
             ->assertJsonFragment([
                 'message' => 'User data',
-                'username' => $admin->username,
-                'email' => $admin->email,
+                'username' => $user->username,
+                'email' => $user->email,
             ]);
     }
 

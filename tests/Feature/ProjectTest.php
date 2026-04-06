@@ -199,6 +199,7 @@ class ProjectTest extends TestCase
                     "status" => $projectData['status'],
                     "goals" => $projectData['goals'],
                     "user_id" => (string) $projectData['user_id'],
+                    "hero_name" => (string) $project->user->hero_name,
                 ],
             ]);
     }
@@ -208,20 +209,24 @@ class ProjectTest extends TestCase
         $user = User::factory()->create([ 'role' => Role::User->value ]);
 
         $project = Project::factory()->create([ 'user_id' => $user->id ]);
-        $projectData = Project::factory()->make()->toArray();
-        $projectData['id'] = $project->id;
+        $projectData = [
+            'id' => $project->id,
+            'goals' => $project->goals,
+            'status' => $project->status,
+        ];
 
         $this->actingAs($user)->put(route('project.update', $projectData))
             ->assertStatus(200)
             ->assertExactJson([
                 'message' => 'Project successfully updated.',
                 "project" => [
-                    "id" => (int) $projectData['id'],
-                    "name" => $projectData['name'],
-                    "description" => $projectData['description'],
                     "status" => $projectData['status'],
-                    "goals" => $projectData['goals'],
-                    "user_id" => (string) $projectData['user_id'],
+                    "goals" => trim($projectData['goals']),
+                    "id" => $project->id,
+                    "name" => $project->name,
+                    "description" => $project->description,
+                    "user_id" => $project->user_id,
+                    "hero_name" => (string) $user->hero_name,
                 ],
             ]);
     }

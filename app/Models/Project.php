@@ -19,8 +19,6 @@ class Project extends Model
         'user_id',
     ];
 
-    protected $appends = ['hero_name'];
-
     protected $hidden = [
         'user',
         'created_at',

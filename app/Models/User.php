@@ -37,8 +37,6 @@ class User extends Authenticatable implements JWTSubject
         'role',
     ];
 
-    protected $appends = ['hero_name'];
-
     /**
      * The attributes that should be hidden for serialization.
      *
