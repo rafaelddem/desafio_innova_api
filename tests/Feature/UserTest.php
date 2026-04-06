@@ -133,7 +133,7 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create([ 'role' => Role::User->value ]);
 
-        $this->actingAs($user)->get(route('user.show'))
+        $this->actingAs($user)->get(route('user.show', ['id' => $user->id]))
             ->assertStatus(200)
             ->assertJsonFragment([
                 'message' => 'User data',
@@ -142,11 +142,23 @@ class UserTest extends TestCase
             ]);
     }
 
+    public function test_show_user_fail(): void
+    {
+        $userLogin = User::factory()->create([ 'role' => Role::User->value ]);
+        $userShow = User::factory()->create([ 'role' => Role::User->value ]);
+
+        $this->actingAs($userLogin)->get(route('user.show', ['id' => $userShow->id]))
+            ->assertStatus(401)
+            ->assertJsonFragment([
+                'message' => 'You do not have permission to access this resource.',
+            ]);
+    }
+
     public function test_show_admin_successfully(): void
     {
         $admin = User::factory()->create([ 'role' => Role::Admin->value ]);
 
-        $this->actingAs($admin)->get(route('user.show'))
+        $this->actingAs($admin)->get(route('user.show', ['id' => $admin->id]))
             ->assertStatus(200)
             ->assertJsonFragment([
                 'message' => 'User data',

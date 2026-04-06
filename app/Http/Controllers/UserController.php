@@ -35,12 +35,12 @@ class UserController extends BaseController
         ], 401);
     }
 
-    public function show(Request $request)
+    public function show(int $id, Request $request)
     {
         try {
             return response()->json([
                 'message' => 'User data',
-                'user' => $request->user(),
+                'user' => $this->service->find($id),
             ], 200);
         } catch (BaseException $exception) {
             $message = $exception->getMessage();

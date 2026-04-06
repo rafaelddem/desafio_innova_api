@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\BaseException;
 use App\Exceptions\ServiceException;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,6 +20,8 @@ class UserService extends BaseService
     {
         try {
             return new UserResource($this->repository->create($attributes));
+        } catch (BaseException $exception) {
+            throw $exception;
         } catch (\Throwable $th) {
             throw new ServiceException();
         }
@@ -32,15 +35,24 @@ class UserService extends BaseService
             Gate::authorize('update', $user);
 
             return new UserResource($this->repository->update($id, $attributes));
+        } catch (BaseException $exception) {
+            throw $exception;
         } catch (\Throwable $th) {
             throw new ServiceException();
         }
     }
 
-    public function show(int $id)
+    public function find(int $id, array $with = [])
     {
         try {
+            $user = new User();
+            $user->id = $id;
+
+            Gate::authorize('view', $user);
+
             return new UserResource($this->repository->find($id));
+        } catch (BaseException $exception) {
+            throw $exception;
         } catch (\Throwable $th) {
             throw new ServiceException();
         }
